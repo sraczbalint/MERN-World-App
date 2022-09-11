@@ -1,0 +1,37 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.4",
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "concurrently": "^7.4.0",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.7",
+    "http-server": "^14.1.1",
+    "prettier": "^2.7.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js",
+    "open": "concurrently \"http-server -a localhost -p 3000\" \"open http://localhost:3000/build\"",
+    "prettier": "prettier --write \"src/**/*.js\"",
+    "prettier:check": "prettier --check \"src/**/*.js\"",
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "lint:check": "eslint \"**/*.js\""
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend-server",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+}
