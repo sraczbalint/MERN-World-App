@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
+import { Button } from "../button/button";
 
 export default function Register({ setShowRegister }) {
   const [success, setSucces] = useState(false);
@@ -37,13 +38,13 @@ export default function Register({ setShowRegister }) {
     <Box className="registerContainer">
       <Box className="logo">
         <LocationOnIcon />
-        BrewPin
+        TracelPin
       </Box>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="username" ref={nameRef} />
         <input type="email" placeholder="email" ref={emailRef} />
         <input type="password" placeholder="password" ref={passwordRef} />
-        <button className="registerBtn">Register</button>
+        <Button className="registerBtn" title="Register" />
         {success && (
           <span className="success">Succesfull. You can login in!</span>
         )}

@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Map, { Marker, Popup } from "react-map-gl";
+import Map, { Marker } from "react-map-gl";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import StarIcon from "@mui/icons-material/Star";
 import axios from "axios";
-import { format } from "timeago.js";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 import { Box } from "@mui/system";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
-
-const Ratings = ({ number }) => {
-  let ratings = [];
-  for (let i = 0; i < number - 1; ++i) {
-    ratings.push(<StarIcon />);
-  }
-  return ratings;
-};
+import { OutputPopup } from "./components/outputPopup/OutputPopup";
+import { InputPopup } from "./components/inputPopup/InputPopup";
+import { Button } from "./components/button/button";
 
 function App() {
   const myStorage = window.localStorage;
@@ -35,13 +28,10 @@ function App() {
     zoom: 3,
   });
 
-  console.log(currentPlaceId);
-
   useEffect(() => {
     const getPins = async () => {
       try {
         const res = await axios.get("/pins");
-        console.log("response", res);
         setPins(res.data);
       } catch (err) {
         console.error(err);
@@ -56,7 +46,6 @@ function App() {
   };
 
   const handleAddClick = (e) => {
-    console.log(Object.values(e.lngLat)[1]);
     setNewPlace({
       lat: Object.values(e.lngLat)[1],
       lon: Object.values(e.lngLat)[0],
@@ -80,11 +69,9 @@ function App() {
       lat: newPlace.lat,
       lon: newPlace.lon,
     };
-    console.log("newPin", newPin);
 
     try {
-      const res = await axios.post("/pins", newPin);
-      console.log("res", res);
+      await axios.post("/pins", newPin);
       setPins([...pins, newPin]);
       setNewPlace(null);
     } catch (err) {
@@ -134,83 +121,40 @@ function App() {
               onClick={() => handleMarkerClick(p._id, p.lat, p.lon)}
             />
           </Marker>
-          {p._id === currentPlaceId &&
-            (console.log(p.rating),
-            (
-              <Popup
-                key={p._id}
-                longitude={p.lon}
-                latitude={p.lat}
-                anchor="left"
-                closeButton={true}
-                closeOnClick={false}
-                onClose={() => setCurrentPlaceId(null)}
-              >
-                <Box className="card">
-                  <label>Place</label>
-                  <h4>{p.title}</h4>
-                  <label>Review</label>
-                  <p>{p.desc}</p>
-                  <label>Rating</label>
-                  <Box className="star">
-                    <Ratings number={p.rating} />
-                    {Array(p.rating).fill(<StarIcon className="star" />)}
-                  </Box>
-                  <label>Information</label>
-                  <span className="username"> Created by {p.username}</span>
-                  <span className="date"> {format(p.createdAt)}</span>
-                </Box>
-              </Popup>
-            ))}
+          {p._id === currentPlaceId && (
+            <OutputPopup pins={p} setCurrentPlaceId={setCurrentPlaceId} />
+          )}
         </Box>
       ))}
       {newPlace && (
-        <Popup
-          longitude={newPlace.lon}
-          latitude={newPlace.lat}
-          anchor="left"
-          closeOnClick={false}
-          closeButton={true}
-          onClose={() => setCurrentPlaceId(null)}
-        >
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <label>Title</label>
-            <input
-              placeholder="Enter a title"
-              onChange={(e) => setTitle(e.target.value)}
-            ></input>
-            <label>Review</label>
-            <input
-              placeholder="Say us something about this place"
-              onChange={(e) => setDesc(e.target.value)}
-            ></input>
-            <label>Rating</label>
-            <select onChange={(e) => setRating(e.target.value)}>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </select>
-            <button>Add rating</button>
-          </form>
-        </Popup>
+        <InputPopup
+          handleSubmit={handleSubmit}
+          newPlace={newPlace}
+          setCurrentPlaceId={setCurrentPlaceId}
+          setTitle={setTitle}
+          setDesc={setDesc}
+          setRating={setRating}
+        />
       )}
+
       {currentUser ? (
-        <button className="button logout" onClick={(e) => handleLogout(e)}>
-          Log out
-        </button>
+        <Button
+          className="button logout"
+          title="Log out"
+          onClick={(e) => handleLogout(e)}
+        />
       ) : (
         <Box className="buttons">
-          <button className="button login" onClick={() => setShowLogin(true)}>
-            Login
-          </button>
-          <button
+          <Button
+            className="button login"
+            title="Login"
+            onClick={() => setShowLogin(true)}
+          />
+          <Button
             className="button register"
+            title="register"
             onClick={() => setShowRegister(true)}
-          >
-            Register
-          </button>
+          />
         </Box>
       )}
       {showregister && <Register setShowRegister={setShowRegister} />}
