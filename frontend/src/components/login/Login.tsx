@@ -2,20 +2,34 @@ import { Box } from "@mui/system";
 import "./login.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
-import { useRef } from "react";
+import { createRef, useState } from "react";
 import axios from "axios";
 
-export default function Login({ setShowLogin, myStorage, setCurrentUser }) {
-  const [error, setError] = useState(false);
-  const nameRef = useRef();
-  const passwordRef = useRef();
+interface LoginProps {
+  setShowLogin: (value: React.SetStateAction<boolean>) => void;
+  myStorage: Storage;
+  setCurrentUser: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
-  const handleSubmit = async (e) => {
+interface newUserProps {
+  username?: string;
+  password?: string | number;
+}
+
+export default function Login({
+  setShowLogin,
+  myStorage,
+  setCurrentUser,
+}: LoginProps) {
+  const [error, setError] = useState<boolean>(false);
+  const nameRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const newUser = {
-      username: nameRef.current.value,
-      password: passwordRef.current.value,
+    const newUser: newUserProps = {
+      username: nameRef?.current?.value,
+      password: passwordRef?.current?.value,
     };
 
     try {
