@@ -11,18 +11,47 @@ import { OutputPopup } from "./components/outputPopup/OutputPopup";
 import { InputPopup } from "./components/inputPopup/InputPopup";
 import { Button } from "./components/button/button";
 
+export interface PinProps {
+  _id: string;
+  username: string | number;
+  title: string;
+  desc: string;
+  rating: number;
+  lat: number;
+  lon: number;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
+interface NewPlaceProps {
+  lat: number;
+  lon: number;
+}
+
+interface ViewPortProps {
+  longitude: number;
+  latitude: number;
+  zoom: number;
+  bearing?: number | undefined;
+  pitch?: number;
+  padding?: mapboxgl.PaddingOptions;
+}
+
 function App() {
   const myStorage = window.localStorage;
-  const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"));
-  const [pins, setPins] = useState([]);
-  const [currentPlaceId, setCurrentPlaceId] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [desc, setDesc] = useState(null);
-  const [rating, setRating] = useState(1);
-  const [newPlace, setNewPlace] = useState(null);
-  const [showregister, setShowRegister] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [viewport, setViewport] = useState({
+  const [currentUser, setCurrentUser] = useState<string | null>(
+    myStorage.getItem("user")
+  );
+  const [pins, setPins] = useState<PinProps[]>([]);
+  const [currentPlaceId, setCurrentPlaceId] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+  const [desc, setDesc] = useState<string | null>(null);
+  const [rating, setRating] = useState<number | string>(1);
+  const [newPlace, setNewPlace] = useState<NewPlaceProps | null>(null);
+  const [showregister, setShowRegister] = useState<boolean>(false);
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [viewport, setViewport] = useState<ViewPortProps>({
     longitude: 2,
     latitude: 48,
     zoom: 3,
@@ -40,12 +69,12 @@ function App() {
     getPins();
   }, []);
 
-  const handleMarkerClick = (id, lat, lon) => {
+  const handleMarkerClick = (id: string, lat: number, lon: number) => {
     setCurrentPlaceId(id);
     setViewport({ ...viewport, latitude: lat, longitude: lon });
   };
 
-  const handleAddClick = (e) => {
+  const handleAddClick = (e: mapboxgl.MapLayerMouseEvent) => {
     setNewPlace({
       lat: Object.values(e.lngLat)[1],
       lon: Object.values(e.lngLat)[0],
@@ -57,7 +86,7 @@ function App() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newPin = {
@@ -65,21 +94,20 @@ function App() {
       title,
       desc,
       rating,
-
-      lat: newPlace.lat,
-      lon: newPlace.lon,
+      lat: newPlace?.lat,
+      lon: newPlace?.lon,
     };
 
     try {
-      await axios.post("/pins", newPin);
-      setPins([...pins, newPin]);
+      const res = await axios.post("/pins", newPin);
+      setPins([...pins, res.data]);
       setNewPlace(null);
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     myStorage.removeItem("user");
     setCurrentUser(null);
@@ -87,30 +115,20 @@ function App() {
 
   return (
     <Map
-      viewState={viewport}
+      {...viewport}
       style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
       mapboxAccessToken={process.env.REACT_APP_MAPBOX}
       mapStyle="mapbox://styles/mapbox/streets-v9"
-      animationMode={"flyTo"}
-      onMove={(viewport) =>
-        setViewport(
-          Math.round({
-            ...viewport,
-            latitude: viewport.lat,
-            longitude: viewport.lon,
-          })
-        )
-      }
-      onDblClick={(e) => handleAddClick(e)}
+      onMove={(evt) => setViewport(evt.viewState)}
+      onDblClick={(e: mapboxgl.MapLayerMouseEvent) => handleAddClick(e)}
       doubleClickZoom={false}
-      double
     >
       {pins.map((p) => (
         <Box key={p._id}>
           <Marker
             longitude={p.lon}
             latitude={p.lat}
-            offset={-[viewport.zoom * 9, 0]}
+            offset={[0, -viewport.zoom]}
           >
             <LocationOnIcon
               sx={{
@@ -141,7 +159,7 @@ function App() {
         <Button
           className="button logout"
           title="Log out"
-          onClick={(e) => handleLogout(e)}
+          onClick={(e: React.FormEvent<HTMLInputElement>) => handleLogout(e)}
         />
       ) : (
         <Box className="buttons">

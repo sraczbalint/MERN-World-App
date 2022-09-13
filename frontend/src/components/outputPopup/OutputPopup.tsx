@@ -4,8 +4,17 @@ import StarIcon from "@mui/icons-material/Star";
 import { format } from "timeago.js";
 import "./outputPopup.css";
 import { Popup } from "react-map-gl";
+import { PinProps } from "../../App";
 
-export function OutputBox({ pins }) {
+interface OutputBoxProps {
+  pins: PinProps;
+}
+
+type OutputPopupProps = {
+  setCurrentPlaceId: React.Dispatch<React.SetStateAction<string | null>>;
+} & OutputBoxProps;
+
+export function OutputBox({ pins }: OutputBoxProps) {
   return (
     <Box className="card">
       <label>Place</label>
@@ -15,7 +24,6 @@ export function OutputBox({ pins }) {
       <label>Rating</label>
       <Box className="star">
         <Ratings number={pins.rating} icon={<StarIcon />} />
-        {Array(pins.rating).fill(<StarIcon className="star" />)}
       </Box>
       <label>Information</label>
       <span className="username"> Created by {pins.username}</span>
@@ -24,7 +32,7 @@ export function OutputBox({ pins }) {
   );
 }
 
-export function OutputPopup({ pins, setCurrentPlaceId }) {
+export function OutputPopup({ pins, setCurrentPlaceId }: OutputPopupProps) {
   return (
     <Popup
       key={pins._id}

@@ -2,7 +2,27 @@ import React from "react";
 import { Popup } from "react-map-gl";
 import { Button } from "../button/button";
 
-function InputBox({ handleSubmit, setTitle, setDesc, setRating }) {
+interface InputBoxProps {
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  setTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  setDesc: React.Dispatch<React.SetStateAction<string | null>>;
+  setRating: React.Dispatch<React.SetStateAction<number | string>>;
+}
+
+type InputPopupProps = {
+  newPlace: {
+    lat: number;
+    lon: number;
+  };
+  setCurrentPlaceId: React.Dispatch<React.SetStateAction<string | null>>;
+} & InputBoxProps;
+
+function InputBox({
+  handleSubmit,
+  setTitle,
+  setDesc,
+  setRating,
+}: InputBoxProps) {
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <label>Title</label>
@@ -35,7 +55,7 @@ export function InputPopup({
   setDesc,
   setTitle,
   setRating,
-}) {
+}: InputPopupProps) {
   return (
     <Popup
       longitude={newPlace.lon}
