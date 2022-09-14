@@ -28,7 +28,7 @@ mongoose
   .then(() => {
     console.log('MongoDB is connected')
   })
-  .catch((err) => console.err(err))
+  .catch((err) => console.log(err))
 
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
