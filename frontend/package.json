@@ -32,17 +32,12 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:8800/api"
+  "browserslist": [
+    "defaults",
+    "not ie 11"
+  ],
+  "proxy": [
+    "http://localhost:8800/api",
+    "https://mern-travel-app-backend.herokuapp.com/api"
+  ]
 }
