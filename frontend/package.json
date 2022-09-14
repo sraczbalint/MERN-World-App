@@ -36,5 +36,8 @@
     "defaults",
     "not ie 11"
   ],
-  "proxy": "http://localhost:8800/api"
+  "proxy": [
+    "http://localhost:8800/api",
+    "https://mern-travel-app-backend.herokuapp.com"
+  ]
 }
