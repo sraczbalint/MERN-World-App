@@ -38,6 +38,6 @@
   ],
   "proxy": [
     "http://localhost:8800/api",
-    "https://mern-travel-app-backend.herokuapp.com"
+    "https://mern-travel-app-backend.herokuapp.com/api"
   ]
 }
