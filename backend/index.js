@@ -37,6 +37,6 @@ app.use('/api/users', userRouter)
 
 console.log('PORT', process.env.PORT)
 
-const port = app.listen(process.env.PORT || 8800, () => {
+const port = app.listen(process.env.PORT || 8800, '0.0.0.0', () => {
   console.log(`Backend is running on a port: ${port}!`)
 })
