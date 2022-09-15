@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "nodemon index.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm run build",
+    "heroku-postbuild": " npm install && npm run build",
     "open": "concurrently \"http-server -a localhost -p 3000\" \"open http://localhost:3000/build\" \"open https://mern-travel-app-backend.herokuapp.com\"",
     "prettier": "prettier --write \"src/**/*.js\"",
     "prettier:check": "prettier --check \"src/**/*.js\"",
