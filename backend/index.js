@@ -33,6 +33,10 @@ mongoose
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
 
-app.listen(process.env.PORT || 8800, () => {
-  console.log('Backend is running! ')
+// process.env.PORT || 8800
+
+console.log('PORT', process.env.PORT)
+
+const port = app.listen(process.env.PORT || 8800, () => {
+  console.log(`Backend is running on a port: ${port}!`)
 })
