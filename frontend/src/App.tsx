@@ -63,7 +63,7 @@ function App() {
         const res = await axios.get("/pins");
         setPins(res.data);
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     };
     getPins();
