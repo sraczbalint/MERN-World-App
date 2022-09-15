@@ -37,6 +37,6 @@
     "not ie 11"
   ],
   "proxy": [
-    "https://mern-travel-app-backend.herokuapp.com/api"
+    "https://mern-travel-app-backend.herokuapp.com/api/"
   ]
 }
