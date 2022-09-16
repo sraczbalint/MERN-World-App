@@ -35,7 +35,6 @@ app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
 
 // new part of the code
-app.use(express.static(path.join(__dirname, '/client/build')))
 app.get('/*', function (req, res) {
   res.sendFile('path to index.html')
 })
