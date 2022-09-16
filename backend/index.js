@@ -34,10 +34,11 @@ mongoose
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
 
-// new part of the code
-app.get('/*', function (req, res) {
-  res.sendFile('path to index.html')
-})
+// new part of the
+app.use(express.static(path.join(__dirname, '/client/build')))
+// app.get('/*', function (req, res) {
+//  res.sendFile('path to index.html')
+// })
 
 // process.env.PORT || 8800
 
