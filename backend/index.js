@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
+const path = require('path')
 const pinRouter = require('./router/pins')
 const userRouter = require('./router/users')
 
@@ -32,6 +33,7 @@ mongoose
 
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
+app.use(express.static(path.join(__dirname, '/client/build')))
 
 // process.env.PORT || 8800
 
