@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cors = require('cors')
-const path = require('path')
 const pinRouter = require('./router/pins')
 const userRouter = require('./router/users')
 
@@ -31,11 +30,16 @@ mongoose
   })
   .catch((err) => console.log(err))
 
+// static files
+app.use(express.static('public'))
+
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
 
+app.use(express.urlencoded({ extended: true }))
+
 // new part of the
-app.use(express.static(path.join(__dirname, '/client/build')))
+// app.use(express.static(path.join(__dirname, '/client/build')))
 // app.get('/*', function (req, res) {
 //  res.sendFile('path to index.html')
 // })
