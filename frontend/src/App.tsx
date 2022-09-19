@@ -10,6 +10,7 @@ import Login from "./components/login/Login";
 import { OutputPopup } from "./components/outputPopup/OutputPopup";
 import { InputPopup } from "./components/inputPopup/InputPopup";
 import { Button } from "./components/button/button";
+import { axiosGetPins } from "../src/api/index";
 
 export interface PinProps {
   _id: string;
@@ -38,6 +39,8 @@ interface ViewPortProps {
   padding?: mapboxgl.PaddingOptions;
 }
 
+axios.create({ baseURL: "https://mern-travel-app-backend.herokuapp.com" });
+
 function App() {
   const myStorage = window.localStorage;
   const [currentUser, setCurrentUser] = useState<string | null>(
@@ -60,8 +63,7 @@ function App() {
   useEffect(() => {
     const getPins = async () => {
       try {
-        const res = await axios.get("/pins");
-        console.log(axios.get("/pins"));
+        const res = await axiosGetPins();
         setPins(res.data);
       } catch (err) {
         console.log(err);
