@@ -4,7 +4,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
-    "heroku": "^7.63.0",
+    "heroku": "^7.63.4",
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19"
   },
@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "nodemon index.js",
+    "heroku-postbuild": " npm install && npm run",
     "open": "concurrently \"http-server -a localhost -p 3000\" \"open http://localhost:3000/build\" \"open https://mern-travel-app-backend.herokuapp.com\"",
     "prettier": "prettier --write \"src/**/*.js\"",
     "prettier:check": "prettier --check \"src/**/*.js\"",

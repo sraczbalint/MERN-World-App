@@ -4,8 +4,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { useRef } from "react";
-import axios from "axios";
 import { Button } from "../button/button";
+import { axiosRegister } from "../../api/index";
 
 export default function Register({ setShowRegister }) {
   const [success, setSucces] = useState(false);
@@ -23,7 +23,7 @@ export default function Register({ setShowRegister }) {
     };
 
     try {
-      await axios.post("/users/register ", newUser);
+      await axiosRegister(newUser);
       setError(false);
       setSucces(true);
       setTimeout(() => {

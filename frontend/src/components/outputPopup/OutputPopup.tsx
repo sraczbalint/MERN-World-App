@@ -4,7 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { format } from "timeago.js";
 import "./outputPopup.css";
 import { Popup } from "react-map-gl";
-import { PinProps } from "../../App";
+import { PinProps } from "../../api/index";
 
 interface OutputBoxProps {
   pins: PinProps;

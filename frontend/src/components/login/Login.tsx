@@ -3,7 +3,7 @@ import "./login.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CloseIcon from "@mui/icons-material/Close";
 import { createRef, useState } from "react";
-import axios from "axios";
+import { axiosLogin } from "../../api/index";
 
 interface LoginProps {
   setShowLogin: (value: React.SetStateAction<boolean>) => void;
@@ -11,7 +11,7 @@ interface LoginProps {
   setCurrentUser: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-interface newUserProps {
+interface UserLoginProps {
   username?: string;
   password?: string | number;
 }
@@ -27,13 +27,13 @@ export default function Login({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const newUser: newUserProps = {
+    const loginUser: UserLoginProps = {
       username: nameRef?.current?.value,
       password: passwordRef?.current?.value,
     };
 
     try {
-      const res = await axios.post("/users/login ", newUser);
+      const res = await axiosLogin(loginUser);
       setError(false);
       myStorage.setItem("user", res.data.username);
       setCurrentUser(res.data.username);

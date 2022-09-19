@@ -30,9 +30,24 @@ mongoose
   })
   .catch((err) => console.log(err))
 
+// static files
+app.use(express.static('public'))
+
 app.use('/api/pins', pinRouter)
 app.use('/api/users', userRouter)
 
-app.listen(process.env.PORT || 8800, () => {
-  console.log('Backend is running! ')
+app.use(express.urlencoded({ extended: true }))
+
+// new part of the
+// app.use(express.static(path.join(__dirname, '/client/build')))
+// app.get('/*', function (req, res) {
+//  res.sendFile('path to index.html')
+// })
+
+// process.env.PORT || 8800
+
+console.log('PORT', process.env.PORT)
+
+const port = app.listen(process.env.PORT || 8800, '0.0.0.0', () => {
+  console.log(`Backend is running on a port: ${port}!`)
 })
