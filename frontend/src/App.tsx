@@ -39,8 +39,6 @@ interface ViewPortProps {
   padding?: mapboxgl.PaddingOptions;
 }
 
-axios.create({ baseURL: "https://mern-travel-app-backend.herokuapp.com" });
-
 function App() {
   const myStorage = window.localStorage;
   const [currentUser, setCurrentUser] = useState<string | null>(
@@ -63,7 +61,9 @@ function App() {
   useEffect(() => {
     const getPins = async () => {
       try {
-        const res = await axiosGetPins();
+        const res = await axios.get(
+          "https://mern-travel-app-backend.herokuapp.com/api/pins"
+        );
         setPins(res.data);
       } catch (err) {
         console.log(err);
