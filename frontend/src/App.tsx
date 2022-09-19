@@ -62,15 +62,19 @@ function App() {
   };
 
   const handleAddClick = (e: mapboxgl.MapLayerMouseEvent) => {
-    setNewPlace({
-      lat: Object.values(e.lngLat)[1],
-      lon: Object.values(e.lngLat)[0],
-    });
-    setViewport({
-      ...viewport,
-      latitude: Object.values(e.lngLat)[1],
-      longitude: Object.values(e.lngLat)[0],
-    });
+    if (currentUser) {
+      setNewPlace({
+        lat: Object.values(e.lngLat)[1],
+        lon: Object.values(e.lngLat)[0],
+      });
+      setViewport({
+        ...viewport,
+        latitude: Object.values(e.lngLat)[1],
+        longitude: Object.values(e.lngLat)[0],
+      });
+    } else {
+      setShowLogin(true);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -153,12 +157,18 @@ function App() {
           <Button
             className="button login"
             title="Login"
-            onClick={() => setShowLogin(true)}
+            onClick={() => {
+              setShowLogin(true);
+              setShowRegister(false);
+            }}
           />
           <Button
             className="button register"
             title="register"
-            onClick={() => setShowRegister(true)}
+            onClick={() => {
+              setShowRegister(true);
+              setShowLogin(false);
+            }}
           />
         </Box>
       )}
