@@ -21,7 +21,6 @@ export default function Register({ setShowRegister }) {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-
     try {
       await axiosRegister(newUser);
       setError(false);
@@ -48,7 +47,9 @@ export default function Register({ setShowRegister }) {
         {success && (
           <span className="success">Succesfull. You can login in!</span>
         )}
-        {error && <span className="failure">Something went wrong!</span>}
+        {error && (
+          <span className="failure">Please use unique credentials</span>
+        )}
       </form>
       <CloseIcon
         className="registerCancel"
