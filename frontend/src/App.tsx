@@ -62,15 +62,20 @@ function App() {
   };
 
   const handleAddClick = (e: mapboxgl.MapLayerMouseEvent) => {
-    setNewPlace({
-      lat: Object.values(e.lngLat)[1],
-      lon: Object.values(e.lngLat)[0],
-    });
-    setViewport({
-      ...viewport,
-      latitude: Object.values(e.lngLat)[1],
-      longitude: Object.values(e.lngLat)[0],
-    });
+    console.log("currentUser", currentUser);
+    if (currentUser) {
+      setNewPlace({
+        lat: Object.values(e.lngLat)[1],
+        lon: Object.values(e.lngLat)[0],
+      });
+      setViewport({
+        ...viewport,
+        latitude: Object.values(e.lngLat)[1],
+        longitude: Object.values(e.lngLat)[0],
+      });
+    } else {
+      setShowLogin(true);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
