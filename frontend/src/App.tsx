@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Map, { Marker } from "react-map-gl";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 import { Box } from "@mui/system";
@@ -10,20 +9,7 @@ import Login from "./components/login/Login";
 import { OutputPopup } from "./components/outputPopup/OutputPopup";
 import { InputPopup } from "./components/inputPopup/InputPopup";
 import { Button } from "./components/button/button";
-import { axiosGetPins } from "../src/api/index";
-
-export interface PinProps {
-  _id: string;
-  username: string | number;
-  title: string;
-  desc: string;
-  rating: number;
-  lat: number;
-  lon: number;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
+import { axiosGetPins, axiosPostPins, PinProps } from "../src/api/index";
 
 interface NewPlaceProps {
   lat: number;
@@ -61,9 +47,7 @@ function App() {
   useEffect(() => {
     const getPins = async () => {
       try {
-        const res = await axios.get(
-          "https://mern-travel-app-backend.herokuapp.com/api/pins"
-        );
+        const res = await axiosGetPins();
         setPins(res.data);
       } catch (err) {
         console.log(err);
@@ -102,7 +86,7 @@ function App() {
     };
 
     try {
-      const res = await axios.post("/pins", newPin);
+      const res = await axiosPostPins(newPin);
       setPins([...pins, res.data]);
       setNewPlace(null);
     } catch (err) {
